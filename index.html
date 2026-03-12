@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор резюме</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafc;
+            color: #1a2b3e;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Шапка */
+        .header {
+            background: linear-gradient(145deg, #1a2b3e, #2c3e50);
+            color: white;
+            padding: 50px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0.4;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+        }
+
+        /* Кнопка назад */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #e1e8f0;
+            padding: 12px 24px;
+            border-radius: 40px;
+            margin: 15px 0 30px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #2c3e50;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .back-button:hover {
+            border-color: #2c3e50;
+            transform: translateX(-5px);
+            box-shadow: 0 6px 15px rgba(44,62,80,0.1);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Карточки выбора */
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .type-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.05);
+        }
+
+        .type-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px -12px rgba(44,62,80,0.15);
+            border-color: #2c3e50;
+        }
+
+        /* Векторные иконки SVG */
+        .type-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .type-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: #2c3e50;
+            stroke-width: 1.5;
+            fill: none;
+            transition: all 0.3s;
+        }
+
+        .type-card:hover .type-icon svg {
+            stroke: #1a2b3e;
+            transform: scale(1.05);
+        }
+
+        .type-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a2b3e;
+            margin-bottom: 10px;
+        }
+
+        .type-card p {
+            color: #5a6f88;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            background: #f0f4fa;
+            color: #2c3e50;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Сохраненные резюме */
+        .saved-section {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 15px 35px -15px rgba(0,0,0,0.05);
+        }
+
+        .saved-section h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            color: #1a2b3e;
+            margin-bottom: 25px;
+            letter-spacing: -0.3px;
+        }
+
+        .saved-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .saved-card {
+            background: #f9fafc;
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #edf2f7;
+        }
+
+        .saved-card:hover {
+            background: white;
+            border-color: #2c3e50;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -8px rgba(44,62,80,0.15);
+        }
+
+        .saved-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a2b3e;
+            margin-bottom: 5px;
+        }
+
+        .saved-card p {
+            color: #5a6f88;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .saved-date {
+            color: #8a9bb0;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+
+        .delete-saved {
+            background: white;
+            border: 1px solid #ffe0e0;
+            color: #f05b5b;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .delete-saved:hover {
+            background: #f05b5b;
+            color: white;
+            border-color: #f05b5b;
+        }
+
+        /* Конструктор */
+        .constructor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            margin: 30px 0 50px;
+        }
+
+        @media (max-width: 992px) {
+            .constructor {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 15px 35px -15px rgba(0,0,0,0.05);
+        }
+
+        .form-section h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            color: #1a2b3e;
+            margin-bottom: 30px;
+            letter-spacing: -0.3px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #e1e8f0;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: #f9fafc;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2c3e50;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44,62,80,0.05);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+        }
+
+        .add-button {
+            background: #f0f4fa;
+            border: 1px dashed #2c3e50;
+            color: #2c3e50;
+            padding: 14px;
+            border-radius: 16px;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .add-button:hover {
+            background: #e1e8f0;
+            border-style: solid;
+        }
+
+        .remove-button {
+            background: white;
+            border: 1px solid #f0f0f0;
+            color: #8a9bb0;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .remove-button:hover {
+            background: #fff0f0;
+            color: #f05b5b;
+            border-color: #ffc0c0;
+        }
+
+        .entry {
+            background: #f9fafc;
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 15px;
+            border: 1px solid #edf2f7;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .entry-header h4 {
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .primary-button {
+            background: linear-gradient(145deg, #1a2b3e, #2c3e50);
+            color: white;
+            border: none;
+            padding: 16px 25px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -8px rgba(44,62,80,0.3);
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -8px rgba(44,62,80,0.4);
+        }
+
+        .secondary-button {
+            background: white;
+            border: 1px solid #e1e8f0;
+            color: #2c3e50;
+            padding: 16px 25px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px -8px rgba(0,0,0,0.1);
+        }
+
+        .secondary-button:hover {
+            border-color: #2c3e50;
+            background: #f9fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -8px rgba(44,62,80,0.2);
+        }
+
+        /* Предпросмотр */
+        .resume-preview {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 15px 35px -15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+        }
+
+        .resume-preview h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            color: #1a2b3e;
+            margin-bottom: 25px;
+            letter-spacing: -0.3px;
+        }
+
+        .resume {
+            font-family: 'SF Pro', 'Inter', -apple-system, sans-serif;
+            color: #1a2b3e;
+            background: #f9fafc;
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #edf2f7;
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .resume-header h3 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #1a2b3e;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .resume-contacts {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            color: #5a6f88;
+            font-size: 0.95rem;
+        }
+
+        .resume-section {
+            margin-bottom: 25px;
+        }
+
+        .resume-section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e1e8f0;
+        }
+
+        .resume-item {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .resume-item-title {
+            font-weight: 600;
+            color: #1a2b3e;
+        }
+
+        .resume-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .resume-tag {
+            background: white;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #2c3e50;
+            border: 1px solid #e1e8f0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .empty-resume {
+            color: #8a9bb0;
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.1rem;
+            background: #f9fafc;
+            border-radius: 20px;
+            border: 2px dashed #e1e8f0;
+        }
+
+        .footer {
+            background: white;
+            border-top: 1px solid #edf2f7;
+            padding: 30px 0;
+            margin-top: 70px;
+            text-align: center;
+            color: #8a9bb0;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Конструктор резюме</h1>
+            <p>Создайте стильное резюме за пару минут</p>
+        </div>
+    </div>
+
+    <!-- Главная страница -->
+    <div id="main-page" class="page active">
+        <div class="container">
+            <div class="type-grid">
+                <!-- Студенты -->
+                <div class="type-card" onclick="selectType('student')">
+                    <div class="type-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <h3>Студенты</h3>
+                    <p>Для поступления в вузы, колледжи и на стажировки</p>
+                    <span class="type-badge">Образование • ЕГЭ • Достижения</span>
+                </div>
+
+                <!-- IT -->
+                <div class="type-card" onclick="selectType('it')">
+                    <div class="type-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                            <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01"/>
+                        </svg>
+                    </div>
+                    <h3>IT-специалисты</h3>
+                    <p>Разработчики, DevOps, QA, системные администраторы</p>
+                    <span class="type-badge">Технологии • Проекты • GitHub</span>
+                </div>
+
+                <!-- Бизнес -->
+                <div class="type-card" onclick="selectType('business')">
+                    <div class="type-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5M17 5a3 3 0 0 1 0 6h-5M17 5a3 3 0 0 0 0 6h-5m-5 0H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-1.5"/>
+                        </svg>
+                    </div>
+                    <h3>Бизнес</h3>
+                    <p>Менеджеры, аналитики, руководители проектов</p>
+                    <span class="type-badge">Управление • KPI • Достижения</span>
+                </div>
+
+                <!-- Творческие -->
+                <div class="type-card" onclick="selectType('creative')">
+                    <div class="type-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                            <path d="M2 2l7.5 7.5"/>
+                            <path d="M13 13l3 3"/>
+                        </svg>
+                    </div>
+                    <h3>Творческие</h3>
+                    <p>Дизайнеры, фотографы, копирайтеры, художники</p>
+                    <span class="type-badge">Портфолио • Софт • Проекты</span>
+                </div>
+
+                <!-- Медицина -->
+                <div class="type-card" onclick="selectType('medicine')">
+                    <div class="type-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9-4-18-3 9H2"/>
+                        </svg>
+                    </div>
+                    <h3>Медицина</h3>
+                    <p>Врачи, медсёстры, фармацевты</p>
+                    <span class="type-badge">Сертификаты • Специализация</span>
+                </div>
+
+                <!-- Юристы -->
+                <div class="type-card" onclick="selectType('law')">
+                    <div class="type-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M2 12h20M4 4l16 16M20 4L4 20"/>
+                        </svg>
+                    </div>
+                    <h3>Юристы</h3>
+                    <p>Юристы, адвокаты, консультанты</p>
+                    <span class="type-badge">Дела • Практика • Статус</span>
+                </div>
+            </div>
+
+            <div class="saved-section">
+                <h2>Сохранённые резюме</h2>
+                <div id="savedResumesGrid" class="saved-grid"></div>
+                <p id="noSavedMessage" style="color: #8a9bb0; text-align: center; padding: 40px;">У вас пока нет сохранённых резюме</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Страница конструктора -->
+    <div id="constructor-page" class="page">
+        <div class="container">
+            <div class="back-button" onclick="showMainPage()">
+                <span>←</span> На главную
+            </div>
+
+            <div class="constructor">
+                <!-- Левая колонка: форма -->
+                <div class="form-section">
+                    <h2 id="formTitle">Заполните данные</h2>
+                    
+                    <form id="resumeForm">
+                        <!-- Общие поля -->
+                        <div class="form-group">
+                            <label>ФИО</label>
+                            <input type="text" id="fullName" placeholder="Иванов Иван Иванович">
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Город</label>
+                                <input type="text" id="city" placeholder="Москва">
+                            </div>
+                            <div class="form-group">
+                                <label>Дата рождения</label>
+                                <input type="date" id="birthDate">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Телефон</label>
+                                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" placeholder="ivanov@mail.ru">
+                            </div>
+                        </div>
+
+                        <!-- Динамические поля -->
+                        <div id="dynamicFields"></div>
+
+                        <div class="action-buttons">
+                            <button type="button" class="primary-button" onclick="updateResume()">Обновить резюме</button>
+                            <button type="button" class="secondary-button" onclick="saveResume()">Сохранить</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Правая колонка: предпросмотр -->
+                <div class="resume-preview">
+                    <h2>Предпросмотр</h2>
+                    
+                    <div id="resumeDisplay" class="resume">
+                        <div class="empty-resume">
+                            Выберите тип резюме и заполните форму
+                        </div>
+                    </div>
+
+                    <div class="action-buttons" style="margin-top: 30px;">
+                        <button class="secondary-button" onclick="printResume()">Печать</button>
+                        <button class="secondary-button" onclick="downloadResume()">Скачать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>© 2026 Конструктор резюме</p>
+        </div>
+    </div>
+
+    <script>
+        // Текущий тип
+        let currentType = 'student';
+
+        // Загрузка сохранённых резюме
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedResumes();
+        });
+
+        function selectType(type) {
+            currentType = type;
+            const titles = {
+                student: 'Студенты',
+                it: 'IT-специалист',
+                business: 'Бизнес',
+                creative: 'Творческие',
+                medicine: 'Медицина',
+                law: 'Юристы'
+            };
+            document.getElementById('formTitle').innerText = titles[type];
+            generateFields(type);
+            showConstructorPage();
+        }
+
+        function generateFields(type) {
+            let html = '';
+
+            switch(type) {
+                case 'student':
+                    html = `
+                        <div class="form-group">
+                            <label>Учебное заведение</label>
+                            <input type="text" id="school" placeholder="Название школы, колледжа">
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Класс / Курс</label>
+                                <input type="text" id="grade" placeholder="11 класс">
+                            </div>
+                            <div class="form-group">
+                                <label>Средний балл</label>
+                                <input type="text" id="gpa" placeholder="4.8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>ЕГЭ / экзамены</label>
+                            <div id="egeContainer"></div>
+                            <button type="button" class="add-button" onclick="addEge()">+ Добавить предмет</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Олимпиады и достижения</label>
+                            <div id="olympiadContainer"></div>
+                            <button type="button" class="add-button" onclick="addOlympiad()">+ Добавить</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Иностранные языки</label>
+                            <div id="languageContainer"></div>
+                            <button type="button" class="add-button" onclick="addLanguage()">+ Добавить</button>
+                        </div>
+                        <div class="form-group">
+                            <label>О себе</label>
+                            <textarea id="about" placeholder="Дополнительная информация, увлечения"></textarea>
+                        </div>
+                    `;
+                    break;
+
+                case 'it':
+                    html = `
+                        <div class="form-group">
+                            <label>Образование</label>
+                            <input type="text" id="itEducation" placeholder="Вуз, специальность, годы">
+                        </div>
+                        <div class="form-group">
+                            <label>Специализация</label>
+                            <select id="itSpecialization">
+                                <option value="backend">Backend-разработчик</option>
+                                <option value="frontend">Frontend-разработчик</option>
+                                <option value="fullstack">Fullstack-разработчик</option>
+                                <option value="devops">DevOps-инженер</option>
+                                <option value="qa">QA-тестировщик</option>
+                                <option value="data">Data Scientist</option>
+                                <option value="mobile">Mobile-разработчик</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ключевые технологии</label>
+                            <div id="techSkillsContainer"></div>
+                            <button type="button" class="add-button" onclick="addTechSkill()">+ Добавить технологию</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Опыт работы</label>
+                            <div id="itWorkContainer"></div>
+                            <button type="button" class="add-button" onclick="addITWork()">+ Добавить место работы</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Проекты</label>
+                            <div id="projectsContainer"></div>
+                            <button type="button" class="add-button" onclick="addProject()">+ Добавить проект</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Ссылка на GitHub</label>
+                            <input type="url" id="github" placeholder="https://github.com/username">
+                        </div>
+                    `;
+                    break;
+
+                case 'business':
+                    html = `
+                        <div class="form-group">
+                            <label>Образование</label>
+                            <input type="text" id="businessEducation" placeholder="Вуз, факультет, год">
+                        </div>
+                        <div class="form-group">
+                            <label>Опыт работы</label>
+                            <div id="workExperienceContainer"></div>
+                            <button type="button" class="add-button" onclick="addWorkExperience()">+ Добавить место работы</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Ключевые достижения</label>
+                            <div id="achievementsContainer"></div>
+                            <button type="button" class="add-button" onclick="addAchievement()">+ Добавить достижение</button>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Подчинённых</label>
+                                <input type="number" id="teamSize" placeholder="Количество">
+                            </div>
+                            <div class="form-group">
+                                <label>Бюджет</label>
+                                <input type="text" id="budget" placeholder="до 1 млн ₽">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Иностранные языки</label>
+                            <input type="text" id="businessLanguages" placeholder="Английский B2, немецкий A1">
+                        </div>
+                    `;
+                    break;
+
+                case 'creative':
+                    html = `
+                        <div class="form-group">
+                            <label>Образование / Курсы</label>
+                            <input type="text" id="creativeEducation" placeholder="Школа дизайна, курсы">
+                        </div>
+                        <div class="form-group">
+                            <label>Специализация</label>
+                            <input type="text" id="creativeSpec" placeholder="Графический дизайн, иллюстрация">
+                        </div>
+                        <div class="form-group">
+                            <label>Программное обеспечение</label>
+                            <div id="softwareContainer"></div>
+                            <button type="button" class="add-button" onclick="addSoftware()">+ Добавить программу</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Портфолио (ссылки)</label>
+                            <div id="portfolioContainer"></div>
+                            <button type="button" class="add-button" onclick="addPortfolio()">+ Добавить ссылку</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Опыт / Проекты</label>
+                            <textarea id="creativeExperience" placeholder="Ключевые проекты, заказчики"></textarea>
+                        </div>
+                    `;
+                    break;
+
+                case 'medicine':
+                    html = `
+                        <div class="form-group">
+                            <label>Медицинское образование</label>
+                            <input type="text" id="medEducation" placeholder="Вуз, год окончания">
+                        </div>
+                        <div class="form-group">
+                            <label>Специализация / Ординатура</label>
+                            <input type="text" id="medSpecialization" placeholder="Кардиология">
+                        </div>
+                        <div class="form-group">
+                            <label>Сертификаты</label>
+                            <div id="certificatesContainer"></div>
+                            <button type="button" class="add-button" onclick="addCertificate()">+ Добавить сертификат</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Опыт работы</label>
+                            <div id="medWorkContainer"></div>
+                            <button type="button" class="add-button" onclick="addMedWork()">+ Добавить место работы</button>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Категория</label>
+                                <select id="medCategory">
+                                    <option value="">Нет</option>
+                                    <option value="second">Вторая</option>
+                                    <option value="first">Первая</option>
+                                    <option value="highest">Высшая</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Стаж (лет)</label>
+                                <input type="number" id="medExperience" placeholder="5">
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'law':
+                    html = `
+                        <div class="form-group">
+                            <label>Юридическое образование</label>
+                            <input type="text" id="lawEducation" placeholder="Вуз, год окончания">
+                        </div>
+                        <div class="form-group">
+                            <label>Специализация</label>
+                            <select id="lawSpecialization">
+                                <option value="civil">Гражданское право</option>
+                                <option value="criminal">Уголовное право</option>
+                                <option value="corporate">Корпоративное право</option>
+                                <option value="tax">Налоговое право</option>
+                                <option value="family">Семейное право</option>
+                                <option value="international">Международное право</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Опыт практики</label>
+                            <div id="lawPracticeContainer"></div>
+                            <button type="button" class="add-button" onclick="addLawPractice()">+ Добавить место работы</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Судебные дела</label>
+                            <div id="casesContainer"></div>
+                            <button type="button" class="add-button" onclick="addCase()">+ Добавить дело</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Статус / Членство</label>
+                            <input type="text" id="lawStatus" placeholder="Адвокат, член палаты">
+                        </div>
+                    `;
+                    break;
+            }
+
+            document.getElementById('dynamicFields').innerHTML = html;
+
+            setTimeout(() => {
+                if (type === 'student') {
+                    addEge();
+                    addLanguage();
+                } else if (type === 'it') {
+                    addTechSkill();
+                    addProject();
+                } else if (type === 'business') {
+                    addWorkExperience();
+                } else if (type === 'creative') {
+                    addSoftware();
+                } else if (type === 'medicine') {
+                    addCertificate();
+                    addMedWork();
+                } else if (type === 'law') {
+                    addLawPractice();
+                }
+            }, 100);
+        }
+
+        // Вспомогательные функции
+        function addEge() {
+            const container = document.getElementById('egeContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Предмет</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <div class="row">
+                    <input type="text" class="ege-subject" placeholder="Предмет">
+                    <input type="number" class="ege-score" placeholder="Баллы">
+                </div>
+            `;
+            container.appendChild(entry);
+        }
+
+        function addOlympiad() {
+            const container = document.getElementById('olympiadContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Достижение</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="olympiad-name" placeholder="Название олимпиады" style="margin-bottom: 5px;">
+                <input type="text" class="olympiad-result" placeholder="Результат">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addLanguage() {
+            const container = document.getElementById('languageContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Язык</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="language-text" placeholder="Английский B2">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addTechSkill() {
+            const container = document.getElementById('techSkillsContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Технология</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="tech-name" placeholder="Python, React, Docker">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addITWork() {
+            const container = document.getElementById('itWorkContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Место работы</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="it-company" placeholder="Компания" style="margin-bottom: 5px;">
+                <input type="text" class="it-position" placeholder="Должность" style="margin-bottom: 5px;">
+                <textarea class="it-desc" placeholder="Обязанности, достижения"></textarea>
+            `;
+            container.appendChild(entry);
+        }
+
+        function addProject() {
+            const container = document.getElementById('projectsContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Проект</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="project-name" placeholder="Название проекта" style="margin-bottom: 5px;">
+                <textarea class="project-desc" placeholder="Описание, технологии, роль"></textarea>
+            `;
+            container.appendChild(entry);
+        }
+
+        function addWorkExperience() {
+            const container = document.getElementById('workExperienceContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Место работы</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="work-company" placeholder="Компания" style="margin-bottom: 5px;">
+                <input type="text" class="work-position" placeholder="Должность" style="margin-bottom: 5px;">
+                <input type="text" class="work-period" placeholder="Период работы">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addAchievement() {
+            const container = document.getElementById('achievementsContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Достижение</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <textarea class="achievement-text" placeholder="Опишите достижение (лучше с цифрами)"></textarea>
+            `;
+            container.appendChild(entry);
+        }
+
+        function addSoftware() {
+            const container = document.getElementById('softwareContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Программа</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="software-name" placeholder="Photoshop, Figma, Blender">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addPortfolio() {
+            const container = document.getElementById('portfolioContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Ссылка</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="url" class="portfolio-link" placeholder="https://behance.net/...">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addCertificate() {
+            const container = document.getElementById('certificatesContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Сертификат</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="cert-name" placeholder="Название" style="margin-bottom: 5px;">
+                <input type="text" class="cert-date" placeholder="Год">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addMedWork() {
+            const container = document.getElementById('medWorkContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Место работы</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="med-place" placeholder="Учреждение" style="margin-bottom: 5px;">
+                <input type="text" class="med-position" placeholder="Должность" style="margin-bottom: 5px;">
+                <input type="text" class="med-period" placeholder="Период">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addLawPractice() {
+            const container = document.getElementById('lawPracticeContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Место работы</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="law-org" placeholder="Организация" style="margin-bottom: 5px;">
+                <input type="text" class="law-position" placeholder="Должность">
+            `;
+            container.appendChild(entry);
+        }
+
+        function addCase() {
+            const container = document.getElementById('casesContainer');
+            if (!container) return;
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            entry.innerHTML = `
+                <div class="entry-header">
+                    <h4>Дело</h4>
+                    <button type="button" class="remove-button" onclick="this.closest('.entry').remove()">Удалить</button>
+                </div>
+                <input type="text" class="case-type" placeholder="Категория дела" style="margin-bottom: 5px;">
+                <textarea class="case-desc" placeholder="Описание, результат"></textarea>
+            `;
+            container.appendChild(entry);
+        }
+
+        function updateResume() {
+            const fullName = document.getElementById('fullName')?.value || 'Иванов Иван Иванович';
+            const city = document.getElementById('city')?.value || 'Москва';
+            const phone = document.getElementById('phone')?.value || '+7 (999) 123-45-67';
+            const email = document.getElementById('email')?.value || 'ivanov@mail.ru';
+            const birthDate = document.getElementById('birthDate')?.value;
+            
+            let birthText = '';
+            if (birthDate) {
+                const date = new Date(birthDate);
+                birthText = date.toLocaleDateString('ru-RU');
+            }
+
+            let specificHtml = '';
+
+            if (currentType === 'student') {
+                const school = document.getElementById('school')?.value;
+                const grade = document.getElementById('grade')?.value;
+                const gpa = document.getElementById('gpa')?.value;
+                const about = document.getElementById('about')?.value;
+
+                if (school) {
+                    let eduText = school;
+                    if (grade) eduText += `, ${grade}`;
+                    if (gpa) eduText += ` (ср. балл: ${gpa})`;
+                    specificHtml += `<div class="resume-section"><h4>Образование</h4><div class="resume-item">${eduText}</div></div>`;
+                }
+
+                const egeItems = document.querySelectorAll('#egeContainer .entry');
+                if (egeItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>ЕГЭ</h4>`;
+                    egeItems.forEach(item => {
+                        const subj = item.querySelector('.ege-subject')?.value;
+                        const score = item.querySelector('.ege-score')?.value;
+                        if (subj && score) specificHtml += `<div class="resume-item"><span class="resume-item-title">${subj}:</span> ${score}</div>`;
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                const olympiadItems = document.querySelectorAll('#olympiadContainer .entry');
+                if (olympiadItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Олимпиады и достижения</h4>`;
+                    olympiadItems.forEach(item => {
+                        const name = item.querySelector('.olympiad-name')?.value;
+                        const res = item.querySelector('.olympiad-result')?.value;
+                        if (name) specificHtml += `<div class="resume-item">${name}${res ? ` — ${res}` : ''}</div>`;
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                const langItems = document.querySelectorAll('#languageContainer .entry');
+                if (langItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Иностранные языки</h4>`;
+                    langItems.forEach(item => {
+                        const lang = item.querySelector('.language-text')?.value;
+                        if (lang) specificHtml += `<div class="resume-item">${lang}</div>`;
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                if (about) specificHtml += `<div class="resume-section"><h4>О себе</h4><div class="resume-item">${about}</div></div>`;
+            }
+
+            else if (currentType === 'it') {
+                const education = document.getElementById('itEducation')?.value;
+                const spec = document.getElementById('itSpecialization')?.value;
+                const github = document.getElementById('github')?.value;
+
+                if (education) specificHtml += `<div class="resume-section"><h4>Образование</h4><div class="resume-item">${education}</div></div>`;
+
+                if (spec) {
+                    const specNames = {
+                        backend: 'Backend-разработчик',
+                        frontend: 'Frontend-разработчик',
+                        fullstack: 'Fullstack-разработчик',
+                        devops: 'DevOps-инженер',
+                        qa: 'QA-тестировщик',
+                        data: 'Data Scientist',
+                        mobile: 'Mobile-разработчик'
+                    };
+                    specificHtml += `<div class="resume-section"><h4>Специализация</h4><div class="resume-item">${specNames[spec] || spec}</div></div>`;
+                }
+
+                const techItems = document.querySelectorAll('#techSkillsContainer .entry');
+                if (techItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Ключевые технологии</h4><div class="resume-tags">`;
+                    techItems.forEach(item => {
+                        const tech = item.querySelector('.tech-name')?.value;
+                        if (tech) specificHtml += `<span class="resume-tag">${tech}</span>`;
+                    });
+                    specificHtml += `</div></div>`;
+                }
+
+                const workItems = document.querySelectorAll('#itWorkContainer .entry');
+                if (workItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Опыт работы</h4>`;
+                    workItems.forEach(item => {
+                        const company = item.querySelector('.it-company')?.value;
+                        const pos = item.querySelector('.it-position')?.value;
+                        const desc = item.querySelector('.it-desc')?.value;
+                        if (company || pos) {
+                            specificHtml += `<div class="resume-item"><span class="resume-item-title">${company || ''}</span> — ${pos || ''}`;
+                            if (desc) specificHtml += `<br>${desc}`;
+                            specificHtml += `</div>`;
+                        }
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                const projectItems = document.querySelectorAll('#projectsContainer .entry');
+                if (projectItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Проекты</h4>`;
+                    projectItems.forEach(item => {
+                        const name = item.querySelector('.project-name')?.value;
+                        const desc = item.querySelector('.project-desc')?.value;
+                        if (name || desc) {
+                            specificHtml += `<div class="resume-item">`;
+                            if (name) specificHtml += `<span class="resume-item-title">${name}</span><br>`;
+                            if (desc) specificHtml += `${desc}`;
+                            specificHtml += `</div>`;
+                        }
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                if (github) specificHtml += `<div class="resume-section"><h4>GitHub</h4><div class="resume-item">${github}</div></div>`;
+            }
+
+            else if (currentType === 'business') {
+                const education = document.getElementById('businessEducation')?.value;
+                const team = document.getElementById('teamSize')?.value;
+                const budget = document.getElementById('budget')?.value;
+                const langs = document.getElementById('businessLanguages')?.value;
+
+                if (education) specificHtml += `<div class="resume-section"><h4>Образование</h4><div class="resume-item">${education}</div></div>`;
+
+                const workItems = document.querySelectorAll('#workExperienceContainer .entry');
+                if (workItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Опыт работы</h4>`;
+                    workItems.forEach(item => {
+                        const company = item.querySelector('.work-company')?.value;
+                        const pos = item.querySelector('.work-position')?.value;
+                        const period = item.querySelector('.work-period')?.value;
+                        if (company || pos) {
+                            let workText = `<span class="resume-item-title">${company || ''}</span>`;
+                            if (pos) workText += ` — ${pos}`;
+                            if (period) workText += ` (${period})`;
+                            specificHtml += `<div class="resume-item">${workText}</div>`;
+                        }
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                const achItems = document.querySelectorAll('#achievementsContainer .entry');
+                if (achItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Ключевые достижения</h4>`;
+                    achItems.forEach(item => {
+                        const text = item.querySelector('.achievement-text')?.value;
+                        if (text) specificHtml += `<div class="resume-item">${text}</div>`;
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                if (team || budget) {
+                    specificHtml += `<div class="resume-section"><h4>Управленческий опыт</h4>`;
+                    if (team) specificHtml += `<div class="resume-item">Подчинённых: ${team}</div>`;
+                    if (budget) specificHtml += `<div class="resume-item">Бюджет: ${budget}</div>`;
+                    specificHtml += `</div>`;
+                }
+
+                if (langs) specificHtml += `<div class="resume-section"><h4>Иностранные языки</h4><div class="resume-item">${langs}</div></div>`;
+            }
+
+            else if (currentType === 'creative') {
+                const education = document.getElementById('creativeEducation')?.value;
+                const spec = document.getElementById('creativeSpec')?.value;
+                const experience = document.getElementById('creativeExperience')?.value;
+
+                if (education) specificHtml += `<div class="resume-section"><h4>Образование</h4><div class="resume-item">${education}</div></div>`;
+                if (spec) specificHtml += `<div class="resume-section"><h4>Специализация</h4><div class="resume-item">${spec}</div></div>`;
+
+                const softItems = document.querySelectorAll('#softwareContainer .entry');
+                if (softItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Программное обеспечение</h4><div class="resume-tags">`;
+                    softItems.forEach(item => {
+                        const soft = item.querySelector('.software-name')?.value;
+                        if (soft) specificHtml += `<span class="resume-tag">${soft}</span>`;
+                    });
+                    specificHtml += `</div></div>`;
+                }
+
+                const portItems = document.querySelectorAll('#portfolioContainer .entry');
+                if (portItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Портфолио</h4>`;
+                    portItems.forEach(item => {
+                        const link = item.querySelector('.portfolio-link')?.value;
+                        if (link) specificHtml += `<div class="resume-item"><a href="${link}" target="_blank">${link}</a></div>`;
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                if (experience) specificHtml += `<div class="resume-section"><h4>Опыт / Проекты</h4><div class="resume-item">${experience}</div></div>`;
+            }
+
+            else if (currentType === 'medicine') {
+                const education = document.getElementById('medEducation')?.value;
+                const spec = document.getElementById('medSpecialization')?.value;
+                const category = document.getElementById('medCategory')?.value;
+                const experience = document.getElementById('medExperience')?.value;
+
+                if (education) specificHtml += `<div class="resume-section"><h4>Медицинское образование</h4><div class="resume-item">${education}</div></div>`;
+
+                const certItems = document.querySelectorAll('#certificatesContainer .entry');
+                if (certItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Сертификаты</h4>`;
+                    certItems.forEach(item => {
+                        const name = item.querySelector('.cert-name')?.value;
+                        const date = item.querySelector('.cert-date')?.value;
+                        if (name) specificHtml += `<div class="resume-item">${name}${date ? ` (${date})` : ''}</div>`;
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                const workItems = document.querySelectorAll('#medWorkContainer .entry');
+                if (workItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Опыт работы</h4>`;
+                    workItems.forEach(item => {
+                        const place = item.querySelector('.med-place')?.value;
+                        const pos = item.querySelector('.med-position')?.value;
+                        const period = item.querySelector('.med-period')?.value;
+                        if (place || pos) {
+                            let workText = `<span class="resume-item-title">${place || ''}</span>`;
+                            if (pos) workText += ` — ${pos}`;
+                            if (period) workText += ` (${period})`;
+                            specificHtml += `<div class="resume-item">${workText}</div>`;
+                        }
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                if (spec) specificHtml += `<div class="resume-section"><h4>Специализация</h4><div class="resume-item">${spec}</div></div>`;
+
+                if (category || experience) {
+                    specificHtml += `<div class="resume-section"><h4>Квалификация</h4>`;
+                    if (category) {
+                        const catNames = { second: 'Вторая', first: 'Первая', highest: 'Высшая' };
+                        specificHtml += `<div class="resume-item">Категория: ${catNames[category] || category}</div>`;
+                    }
+                    if (experience) specificHtml += `<div class="resume-item">Стаж: ${experience} лет</div>`;
+                    specificHtml += `</div>`;
+                }
+            }
+
+            else if (currentType === 'law') {
+                const education = document.getElementById('lawEducation')?.value;
+                const spec = document.getElementById('lawSpecialization')?.value;
+                const status = document.getElementById('lawStatus')?.value;
+
+                if (education) specificHtml += `<div class="resume-section"><h4>Юридическое образование</h4><div class="resume-item">${education}</div></div>`;
+
+                const practiceItems = document.querySelectorAll('#lawPracticeContainer .entry');
+                if (practiceItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Юридическая практика</h4>`;
+                    practiceItems.forEach(item => {
+                        const org = item.querySelector('.law-org')?.value;
+                        const pos = item.querySelector('.law-position')?.value;
+                        if (org || pos) {
+                            specificHtml += `<div class="resume-item"><span class="resume-item-title">${org || ''}</span> — ${pos || ''}</div>`;
+                        }
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                const caseItems = document.querySelectorAll('#casesContainer .entry');
+                if (caseItems.length > 0) {
+                    specificHtml += `<div class="resume-section"><h4>Судебные дела</h4>`;
+                    caseItems.forEach(item => {
+                        const type = item.querySelector('.case-type')?.value;
+                        const desc = item.querySelector('.case-desc')?.value;
+                        if (type || desc) {
+                            specificHtml += `<div class="resume-item">`;
+                            if (type) specificHtml += `<span class="resume-item-title">${type}</span><br>`;
+                            if (desc) specificHtml += `${desc}`;
+                            specificHtml += `</div>`;
+                        }
+                    });
+                    specificHtml += `</div>`;
+                }
+
+                if (spec) {
+                    const specNames = {
+                        civil: 'Гражданское право',
+                        criminal: 'Уголовное право',
+                        corporate: 'Корпоративное право',
+                        tax: 'Налоговое право',
+                        family: 'Семейное право',
+                        international: 'Международное право'
+                    };
+                    specificHtml += `<div class="resume-section"><h4>Специализация</h4><div class="resume-item">${specNames[spec] || spec}</div></div>`;
+                }
+
+                if (status) specificHtml += `<div class="resume-section"><h4>Статус</h4><div class="resume-item">${status}</div></div>`;
+            }
+
+            const resumeHtml = `
+                <div class="resume">
+                    <div class="resume-header">
+                        <h3>${fullName}</h3>
+                        <div class="resume-contacts">
+                            <span>${city}</span>
+                            ${birthText ? `<span>${birthText}</span>` : ''}
+                            <span>${phone}</span>
+                            <span>${email}</span>
+                        </div>
+                    </div>
+                    ${specificHtml}
+                </div>
+            `;
+
+            document.getElementById('resumeDisplay').innerHTML = resumeHtml;
+        }
+
+        function saveResume() {
+            const fullName = document.getElementById('fullName')?.value || 'Без имени';
+            const resumeHtml = document.getElementById('resumeDisplay').innerHTML;
+            
+            if (resumeHtml.includes('empty-resume')) {
+                alert('Сначала создайте резюме');
+                return;
+            }
+
+            const saved = JSON.parse(localStorage.getItem('savedResumes') || '[]');
+            
+            const newResume = {
+                id: Date.now(),
+                name: fullName,
+                type: currentType,
+                date: new Date().toLocaleDateString('ru-RU'),
+                html: resumeHtml
+            };
+
+            saved.push(newResume);
+            localStorage.setItem('savedResumes', JSON.stringify(saved));
+            
+            loadSavedResumes();
+            alert('Резюме сохранено');
+        }
+
+        function loadSavedResumes() {
+            const saved = JSON.parse(localStorage.getItem('savedResumes') || '[]');
+            const grid = document.getElementById('savedResumesGrid');
+            const noMessage = document.getElementById('noSavedMessage');
+            
+            if (saved.length === 0) {
+                grid.innerHTML = '';
+                noMessage.style.display = 'block';
+                return;
+            }
+
+            noMessage.style.display = 'none';
+            grid.innerHTML = '';
+
+            saved.reverse().forEach(resume => {
+                const typeNames = {
+                    student: 'Студент',
+                    it: 'IT',
+                    business: 'Бизнес',
+                    creative: 'Творческий',
+                    medicine: 'Медицина',
+                    law: 'Юрист'
+                };
+
+                const card = document.createElement('div');
+                card.className = 'saved-card';
+                card.innerHTML = `
+                    <h4>${resume.name}</h4>
+                    <p>${typeNames[resume.type] || 'Резюме'}</p>
+                    <div class="saved-date">${resume.date}</div>
+                    <button class="delete-saved" onclick="deleteResume(${resume.id}, event)">Удалить</button>
+                `;
+                card.onclick = (e) => {
+                    if (e.target.classList.contains('delete-saved')) return;
+                    loadSavedResume(resume);
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function loadSavedResume(resume) {
+            document.getElementById('resumeDisplay').innerHTML = resume.html;
+            showConstructorPage();
+        }
+
+        function deleteResume(id, event) {
+            event.stopPropagation();
+            if (!confirm('Удалить резюме?')) return;
+            
+            let saved = JSON.parse(localStorage.getItem('savedResumes') || '[]');
+            saved = saved.filter(r => r.id !== id);
+            localStorage.setItem('savedResumes', JSON.stringify(saved));
+            loadSavedResumes();
+        }
+
+        function printResume() {
+            const content = document.getElementById('resumeDisplay').innerHTML;
+            if (content.includes('empty-resume')) {
+                alert('Сначала создайте резюме');
+                return;
+            }
+            const w = window.open();
+            w.document.write(`<html><head><title>Резюме</title><style>body{font-family:Inter;padding:40px;}</style></head><body>${content}</body></html>`);
+            w.document.close();
+            w.print();
+        }
+
+        function downloadResume() {
+            const name = document.getElementById('fullName')?.value || 'Резюме';
+            const content = document.getElementById('resumeDisplay').innerText;
+            if (!content || content.includes('empty-resume')) {
+                alert('Сначала создайте резюме');
+                return;
+            }
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${name}.txt`;
+            a.click();
+        }
+
+        function showMainPage() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('main-page').classList.add('active');
+            loadSavedResumes();
+        }
+
+        function showConstructorPage() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('constructor-page').classList.add('active');
+        }
+    </script>
+</body>
+</html>
