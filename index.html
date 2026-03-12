@@ -24,6 +24,7 @@
             padding: 0 30px;
         }
 
+        /* Шапка */
         .header {
             background: linear-gradient(145deg, #1a2b3e, #2c3e50);
             color: white;
@@ -59,6 +60,7 @@
             position: relative;
         }
 
+        /* Кнопка назад */
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -89,6 +91,7 @@
             display: block;
         }
 
+        /* Карточки выбора */
         .type-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -112,6 +115,7 @@
             border-color: #2c3e50;
         }
 
+        /* Векторные иконки SVG */
         .type-icon {
             width: 60px;
             height: 60px;
@@ -156,6 +160,7 @@
             font-weight: 500;
         }
 
+        /* Сохраненные резюме */
         .saved-section {
             background: white;
             border-radius: 28px;
@@ -232,6 +237,7 @@
             border-color: #f05b5b;
         }
 
+        /* Конструктор */
         .constructor {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -415,6 +421,7 @@
             box-shadow: 0 10px 20px -8px rgba(44,62,80,0.2);
         }
 
+        /* Предпросмотр с красивым оформлением для печати */
         .resume-preview {
             background: white;
             border-radius: 28px;
@@ -433,12 +440,14 @@
             letter-spacing: -0.3px;
         }
 
+        /* Стили резюме с рамкой и красивым оформлением */
         .resume {
             font-family: 'Georgia', 'Times New Roman', serif;
             color: #1a2b3e;
             background: white;
             padding: 40px;
             border: 2px solid #2c3e50;
+            box-shadow: inset 0 0 0 1px #e1e8f0;
             margin-bottom: 20px;
             position: relative;
         }
@@ -446,11 +455,11 @@
         .resume::before {
             content: '';
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 1px solid #d0ddee;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid #e1e8f0;
             pointer-events: none;
         }
 
@@ -459,60 +468,107 @@
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid #2c3e50;
+            position: relative;
         }
 
         .resume-header h3 {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 600;
             color: #1a2b3e;
             margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         .resume-contacts {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
+            margin: 15px 0 5px;
             color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .resume-contacts span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .resume-contacts span::before {
+            content: '•';
+            color: #2c3e50;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .resume-contacts span:first-child::before {
+            content: '';
+            display: none;
         }
 
         .resume-section {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
         .resume-section h4 {
             font-size: 1.2rem;
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #d0ddee;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #2c3e50;
         }
 
         .resume-item {
-            margin-bottom: 8px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .resume-item::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: #2c3e50;
+            opacity: 0.5;
         }
 
         .resume-item-title {
             font-weight: 600;
             color: #1a2b3e;
+            margin-right: 5px;
         }
 
         .resume-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 10px;
+            margin-top: 10px;
+            padding-left: 15px;
         }
 
         .resume-tag {
             background: #f0f4fa;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 6px 16px;
+            border-radius: 30px;
             font-size: 0.85rem;
             color: #2c3e50;
             border: 1px solid #d0ddee;
+        }
+
+        /* Две колонки для опыта */
+        .resume-two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .resume-column {
+            padding-left: 15px;
         }
 
         .empty-resume {
@@ -525,6 +581,50 @@
             border: 2px dashed #e1e8f0;
         }
 
+        /* Стили для печати */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .header, .nav-bar, .back-button, .form-section, .footer, .action-buttons, .saved-section, .type-grid {
+                display: none;
+            }
+            
+            .container {
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .resume-preview {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                position: static;
+            }
+            
+            .resume {
+                border: 2px solid black;
+                box-shadow: none;
+                margin: 0 auto;
+                max-width: 210mm;
+                page-break-after: avoid;
+            }
+            
+            .resume::before {
+                border: 1px solid #ccc;
+            }
+            
+            .resume-header {
+                border-bottom-color: black;
+            }
+            
+            .resume-section h4 {
+                border-left-color: black;
+            }
+        }
+
         .footer {
             background: white;
             border-top: 1px solid #edf2f7;
@@ -533,28 +633,6 @@
             text-align: center;
             color: #8a9bb0;
             font-size: 0.95rem;
-        }
-
-        /* Стили для печати */
-        @media print {
-            .header, .back-button, .form-section, .footer, .action-buttons, .saved-section, .type-grid {
-                display: none;
-            }
-            
-            .resume-preview {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-            }
-            
-            .resume {
-                border: 2px solid black;
-                page-break-inside: avoid;
-            }
-            
-            .resume::before {
-                border: 1px solid #ccc;
-            }
         }
     </style>
 </head>
@@ -566,9 +644,11 @@
         </div>
     </div>
 
+    <!-- Главная страница -->
     <div id="main-page" class="page active">
         <div class="container">
             <div class="type-grid">
+                <!-- Студенты -->
                 <div class="type-card" onclick="selectType('student')">
                     <div class="type-icon">
                         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -581,6 +661,7 @@
                     <span class="type-badge">Образование • ЕГЭ • Достижения</span>
                 </div>
 
+                <!-- IT -->
                 <div class="type-card" onclick="selectType('it')">
                     <div class="type-icon">
                         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -595,6 +676,7 @@
                     <span class="type-badge">Технологии • Проекты • GitHub</span>
                 </div>
 
+                <!-- Бизнес -->
                 <div class="type-card" onclick="selectType('business')">
                     <div class="type-icon">
                         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -607,6 +689,7 @@
                     <span class="type-badge">Управление • KPI • Достижения</span>
                 </div>
 
+                <!-- Творческие -->
                 <div class="type-card" onclick="selectType('creative')">
                     <div class="type-icon">
                         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -621,6 +704,7 @@
                     <span class="type-badge">Портфолио • Софт • Проекты</span>
                 </div>
 
+                <!-- Медицина -->
                 <div class="type-card" onclick="selectType('medicine')">
                     <div class="type-icon">
                         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -632,6 +716,7 @@
                     <span class="type-badge">Сертификаты • Специализация</span>
                 </div>
 
+                <!-- Юристы -->
                 <div class="type-card" onclick="selectType('law')">
                     <div class="type-icon">
                         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -652,6 +737,7 @@
         </div>
     </div>
 
+    <!-- Страница конструктора -->
     <div id="constructor-page" class="page">
         <div class="container">
             <div class="back-button" onclick="showMainPage()">
@@ -659,10 +745,12 @@
             </div>
 
             <div class="constructor">
+                <!-- Левая колонка: форма -->
                 <div class="form-section">
                     <h2 id="formTitle">Заполните данные</h2>
                     
                     <form id="resumeForm">
+                        <!-- Общие поля -->
                         <div class="form-group">
                             <label>ФИО</label>
                             <input type="text" id="fullName" placeholder="Иванов Иван Иванович">
@@ -690,6 +778,7 @@
                             </div>
                         </div>
 
+                        <!-- Динамические поля -->
                         <div id="dynamicFields"></div>
 
                         <div class="action-buttons">
@@ -699,6 +788,7 @@
                     </form>
                 </div>
 
+                <!-- Правая колонка: предпросмотр -->
                 <div class="resume-preview">
                     <h2>Предпросмотр</h2>
                     
@@ -709,8 +799,8 @@
                     </div>
 
                     <div class="action-buttons" style="margin-top: 30px;">
-                        <button class="secondary-button" onclick="printResume()">Печать</button>
-                        <button class="secondary-button" onclick="downloadResume()">Скачать</button>
+                        <button class="secondary-button" onclick="printResume()">🖨️ Печать</button>
+                        <button class="secondary-button" onclick="downloadResume()">📄 Скачать</button>
                     </div>
                 </div>
             </div>
@@ -724,8 +814,10 @@
     </div>
 
     <script>
+        // Текущий тип
         let currentType = 'student';
 
+        // Загрузка сохранённых резюме
         document.addEventListener('DOMContentLoaded', function() {
             loadSavedResumes();
         });
@@ -982,6 +1074,7 @@
             }, 100);
         }
 
+        // Вспомогательные функции
         function addEge() {
             const container = document.getElementById('egeContainer');
             if (!container) return;
@@ -1621,13 +1714,72 @@
                 <head>
                     <title>Резюме</title>
                     <style>
-                        body { font-family: 'Georgia', serif; padding: 20px; }
-                        .resume { border: 2px solid black; padding: 40px; max-width: 210mm; margin: 0 auto; }
-                        .resume::before { content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px solid #ccc; }
-                        .resume-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid black; }
-                        .resume-header h3 { font-size: 24px; }
-                        .resume-contacts { display: flex; justify-content: center; gap: 20px; }
-                        .resume-section h4 { font-size: 18px; border-bottom: 1px solid #ccc; }
+                        body {
+                            font-family: 'Georgia', 'Times New Roman', serif;
+                            padding: 20px;
+                            background: white;
+                        }
+                        .resume {
+                            border: 2px solid black;
+                            padding: 40px;
+                            max-width: 210mm;
+                            margin: 0 auto;
+                            box-shadow: none;
+                            position: relative;
+                        }
+                        .resume::before {
+                            content: '';
+                            position: absolute;
+                            top: 8px;
+                            left: 8px;
+                            right: 8px;
+                            bottom: 8px;
+                            border: 1px solid #ccc;
+                            pointer-events: none;
+                        }
+                        .resume-header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                            padding-bottom: 20px;
+                            border-bottom: 2px solid black;
+                        }
+                        .resume-header h3 {
+                            font-size: 24px;
+                            margin-bottom: 10px;
+                        }
+                        .resume-contacts {
+                            display: flex;
+                            justify-content: center;
+                            gap: 20px;
+                            flex-wrap: wrap;
+                        }
+                        .resume-section h4 {
+                            font-size: 18px;
+                            margin-bottom: 10px;
+                            padding-left: 10px;
+                            border-left: 4px solid black;
+                        }
+                        .resume-item {
+                            margin-bottom: 8px;
+                            padding-left: 15px;
+                            position: relative;
+                        }
+                        .resume-item::before {
+                            content: '—';
+                            position: absolute;
+                            left: 0;
+                        }
+                        .resume-tags {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 8px;
+                            padding-left: 15px;
+                        }
+                        .resume-tag {
+                            background: #f0f0f0;
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                        }
                     </style>
                 </head>
                 <body>
@@ -1641,19 +1793,150 @@
 
         function downloadResume() {
             const name = document.getElementById('fullName')?.value || 'Резюме';
-            const content = document.getElementById('resumeDisplay').outerHTML;
+            const resumeElement = document.getElementById('resumeDisplay');
+            const content = resumeElement.innerHTML;
             
-            if (content.includes('empty-resume')) {
+            if (!content || content.includes('empty-resume')) {
                 alert('Сначала создайте резюме');
                 return;
             }
 
-            const blob = new Blob([content], { type: 'text/html' });
+            // Полный HTML с оформлением для печати
+            const fullHtml = `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Резюме ${name}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: white;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .resume {
+            max-width: 210mm;
+            background: white;
+            padding: 40px;
+            border: 2px solid #1a2b3e;
+            box-shadow: inset 0 0 0 1px #e1e8f0;
+            position: relative;
+            margin: 0 auto;
+        }
+        .resume::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid #d0ddee;
+            pointer-events: none;
+        }
+        .resume-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1a2b3e;
+        }
+        .resume-header h3 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #1a2b3e;
+            margin-bottom: 10px;
+        }
+        .resume-contacts {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            color: #2c3e50;
+        }
+        .resume-contacts span {
+            display: flex;
+            align-items: center;
+        }
+        .resume-contacts span::before {
+            content: '•';
+            color: #2c3e50;
+            margin-right: 8px;
+        }
+        .resume-contacts span:first-child::before {
+            content: '';
+            display: none;
+        }
+        .resume-section {
+            margin-bottom: 25px;
+        }
+        .resume-section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #2c3e50;
+        }
+        .resume-item {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            padding-left: 15px;
+            position: relative;
+        }
+        .resume-item::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: #2c3e50;
+        }
+        .resume-item-title {
+            font-weight: 600;
+            color: #1a2b3e;
+        }
+        .resume-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+        .resume-tag {
+            background: #f0f4fa;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            border: 1px solid #d0ddee;
+        }
+        a {
+            color: #2c3e50;
+            text-decoration: none;
+            border-bottom: 1px dotted #2c3e50;
+        }
+        a:hover {
+            border-bottom: 1px solid #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    ${content}
+</body>
+</html>
+            `;
+
+            const blob = new Blob([fullHtml], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `Резюме_${name}.html`;
             a.click();
+            URL.revokeObjectURL(url);
         }
 
         function showMainPage() {
